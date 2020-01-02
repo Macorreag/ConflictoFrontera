@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1445744160 source:c:\users\miller\documents\poo\logica vector\main.cpp
+	<iostream>
+	<cstdlib>
+	<stdio.h>
+	<ctime>
+	<windows.h>
+

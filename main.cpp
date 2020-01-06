@@ -5,25 +5,23 @@
 #include<windows.h>
 #include <string>
 
+
 using namespace std;
 
 int i,m, inicio, l, c, columna, fila, registro, dado, p, j,z, temporal, conclusion;
 struct casilla *pnueva,*pposicion;
-string vacio="같같�";
+char vacio[6]="같같�";
 void movimiento(int , int , int );
 void movimiento_venezolano(int , int , int );
 void impresiontablero( casilla *pnueva);
 string recorte(string cadena);
  struct casilla{
                 int contenido;
-                string * nombre;
+                char  *nombre;
 
     };
 
-    struct nombre {
-            string nombre;
-                };
-    struct nombre directorio[13];
+
 
 int main(){
 
@@ -32,8 +30,9 @@ pposicion= new struct casilla[13];
 
 for(int x=1;x<65;x++)
         {
+            (pnueva+x)->nombre=new char [6];
             (pnueva+x)->contenido=0;         //rellena el vector de "0"
-            (pnueva+x)->nombre=&vacio;
+            (pnueva+x)->nombre=vacio;
         }
 
 
@@ -42,7 +41,9 @@ cout<<"-------------------Bienvenido a conflicto en la frontera-----------------
 
 
 srand(time(NULL));
+
    for(i=1;i<=12;i++){
+        (pposicion+i)->nombre=new char [6];
     (pposicion+i)->contenido=1 + rand()%63;
    for(m=1;m<i;m++){
         if((pposicion+i)->contenido==(pposicion+m)->contenido){
@@ -51,36 +52,37 @@ srand(time(NULL));
         }
     }
     if(i<=10){
+            cout <<"ingrese el nombre de el  colombiano "<<i<<":";
+
+
             (pnueva+(pposicion+i)->contenido)->contenido=1; //pone el jugador colombiano dentro del tablero
 
         }else{
+            cout <<"ingrese el nombre de el  venezolano "<<i<<":";
             (pnueva+(pposicion+i)->contenido)->contenido=2;    //pone el jugador venezolano dentro del tablero
         }
+        string cad1;
+        cin>>cad1;
+        *((pposicion+i)->nombre)=(recorte(cad1)[0]); //direcciona el apuntador hacia el nombre
+        *((pposicion+i)->nombre+1)=(recorte(cad1)[1]);
+        *((pposicion+i)->nombre+2)=(recorte(cad1)[2]);
+        *((pposicion+i)->nombre+3)=(recorte(cad1)[3]);
+        *((pposicion+i)->nombre+4)=(recorte(cad1)[4]);
+         (pnueva+((pposicion+i)->contenido))->nombre=(pposicion+i)->nombre;
+         if(i<11){cout<<"el nombre asignado al colombiano"<<i<<" fue:"<<(pposicion+i)->nombre<<endl;}else
+            {
+                cout<<"el nombre asignado al venezolano  fue:"<<(pposicion+i)->nombre<<endl;
+            }
 
    }
 
+system("cls");
 
-   for (int x=1;x<=12;x++){
-        if(x<11){cout <<"ingrese el nombre de el  colombiano "<<x<<":";}else{cout <<"ingrese el nombre de el  venezolano "<<x<<":";}
-        string cad1;
-        cin>>cad1;
-        directorio[x].nombre=recorte(cad1);
-        (pposicion+x)->nombre=&directorio[x].nombre; //direcciona el apuntador hacia el nombre
-
-        if(x<11){cout<<"el nombre asignado al colombiano fue:"<<*((pposicion+x)->nombre)<<endl;}else
-            {
-                cout<<"el nombre asignado al venezolano  fue:"<<*((pposicion+x)->nombre)<<endl;
-            }
-        (pnueva+((pposicion+x)->contenido))->nombre=(pposicion+x)->nombre;
-
-
-}
- system("cls");
    cout<<"la posicion inicial del juego es "<<endl;
 cout<<" "<<endl;
 for(inicio=1;inicio<65;inicio+=8){
 cout<<"   "<<(pnueva+inicio)->contenido<<"     "<<(pnueva+inicio+1)->contenido<<"     "<<(pnueva+inicio+2)->contenido<<"     "<<(pnueva+inicio+3)->contenido<<"     "<<(pnueva+inicio+4)->contenido<<"     "<<(pnueva+inicio+5)->contenido<<"     "<<(pnueva+inicio+6)->contenido<<"     "<<(pnueva+inicio+7)->contenido<<endl;
-cout<<" "<<*((pnueva+inicio)->nombre)<<" "<<*((pnueva+inicio+1)->nombre)<<" "<<*((pnueva+inicio+2)->nombre)<<" "<<*((pnueva+inicio+3)->nombre)<<" "<<*((pnueva+inicio+4)->nombre)<<" "<<*((pnueva+inicio+5)->nombre)<<" "<<*((pnueva+inicio+6)->nombre)<<" "<<*((pnueva+inicio+7)->nombre)<<endl;
+cout<<" "<<(pnueva+inicio)->nombre<<" "<<(pnueva+inicio+1)->nombre<<" "<<(pnueva+inicio+2)->nombre<<" "<<(pnueva+inicio+3)->nombre<<" "<<(pnueva+inicio+4)->nombre<<" "<<(pnueva+inicio+5)->nombre<<" "<<(pnueva+inicio+6)->nombre<<" "<<(pnueva+inicio+7)->nombre<<endl;
 
 }
 
@@ -194,6 +196,7 @@ system("pause");
 
 
 
+
 }
 //imprime el tablero para cada movimiento
         cout<<" "<<endl;
@@ -203,9 +206,11 @@ cout<<" "<<endl;
 
 for(inicio=1;inicio<65;inicio+=8){
 cout<<"   "<<(pnueva+inicio)->contenido<<"     "<<(pnueva+inicio+1)->contenido<<"     "<<(pnueva+inicio+2)->contenido<<"     "<<(pnueva+inicio+3)->contenido<<"     "<<(pnueva+inicio+4)->contenido<<"     "<<(pnueva+inicio+5)->contenido<<"     "<<(pnueva+inicio+6)->contenido<<"     "<<(pnueva+inicio+7)->contenido<<endl;
-cout<<" "<<*((pnueva+inicio)->nombre)<<" "<<*((pnueva+inicio+1)->nombre)<<" "<<*((pnueva+inicio+2)->nombre)<<" "<<*((pnueva+inicio+3)->nombre)<<" "<<*((pnueva+inicio+4)->nombre)<<" "<<*((pnueva+inicio+5)->nombre)<<" "<<*((pnueva+inicio+6)->nombre)<<" "<<*((pnueva+inicio+7)->nombre)<<endl;
+cout<<" "<<(pnueva+inicio)->nombre<<" "<<(pnueva+inicio+1)->nombre<<" "<<(pnueva+inicio+2)->nombre<<" "<<(pnueva+inicio+3)->nombre<<" "<<(pnueva+inicio+4)->nombre<<" "<<(pnueva+inicio+5)->nombre<<" "<<(pnueva+inicio+6)->nombre<<" "<<(pnueva+inicio+7)->nombre<<endl;
 
 }
+
+
 
 }
 for(z=1;z<=64;z++){
@@ -234,7 +239,7 @@ if(0<alfa && alfa<9 && 0<=beta && beta<8){
                             }
                             if(dado==omega){
                                 (pnueva+(pposicion+c)->contenido)->contenido=0;
-                                (pnueva+(pposicion+c)->contenido)->nombre=&vacio;
+                                (pnueva+(pposicion+c)->contenido)->nombre=vacio;
                                 (pposicion+c)->contenido=alfa+(beta*8);
                                 (pnueva+(pposicion+c)->contenido)->nombre=(pposicion+c)->nombre;
                                 (pnueva+(pposicion+c)->contenido)->contenido=1;
@@ -263,7 +268,7 @@ void movimiento_venezolano(int gamma, int epsilon, int pi){
                                     if(dado==pi){
 
                                     (pnueva+(pposicion+c)->contenido)->contenido=0;
-                                    (pnueva+(pposicion+c)->contenido)->nombre=&vacio;
+                                    (pnueva+(pposicion+c)->contenido)->nombre=vacio;
                                     (pposicion+c)->contenido=gamma+(epsilon*8);
                                     if((pnueva+(pposicion+c)->contenido)->contenido==1)
                                     {
@@ -272,7 +277,7 @@ void movimiento_venezolano(int gamma, int epsilon, int pi){
                                         {
                                             if(((pposicion+c)->contenido)==(pposicion+y)->contenido)
                                             {
-                                                cout<<*((pposicion+y)->nombre)<<endl;
+                                                cout<<(pposicion+y)->nombre<<endl;
 
                                             }
                                     }
@@ -303,5 +308,6 @@ if(cad3[1]=='\0'||cad3[2]=='\0'||cad3[3]=='\0'||cad3[4]=='\0'){
                     return cad2;
                     }else{return cad3;}
 }
+
 
 

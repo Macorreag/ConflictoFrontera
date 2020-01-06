@@ -6,7 +6,7 @@
 
 using namespace std;
 
-int i, posicion[12],m, nueva[65]={0}, inicio, l, c, columna, fila, registro, dado, p, j,z, temporal, conclusion;
+int i, *pposicion,m, nueva[65]={0}, inicio, l, c, columna, fila, registro, dado, p, j,z, temporal, conclusion;
 void movimiento(int , int , int );
 void movimiento_venezolano(int , int , int );
 void impresiontablero(int nueva[]);
@@ -14,19 +14,21 @@ void impresiontablero(int nueva[]);
 
 main(){
 
+pposicion=new int [13];
+
 srand(time(NULL));
    for(i=1;i<=12;i++){
-    posicion[i]=1 + rand()%63;
+    *(pposicion+i)=1 + rand()%63;
    for(m=1;m<i;m++){
-        if(posicion[i]== posicion[m]){
+        if(*(pposicion+i)== *(pposicion+m)){
             i=i-1;
             break;
         }
     }
     if(i<=10){
-            nueva[posicion[i]]=1;
+            nueva[*(pposicion+i)]=1;
         }else{
-            nueva[posicion[i]]=2;
+            nueva[*(pposicion+i)]=2;
         }
 
    }
@@ -43,12 +45,12 @@ system("pause");
         j=0;
 		if(l%2==1){
 		c=rand()%10+1;
-		while(nueva[posicion[c]]==0 || nueva[posicion[c]]==2){
+		while(nueva[*(pposicion+c)]==0 || nueva[*(pposicion+c)]==2){
 		if(c==10){c=1;}else{c++;}       // si no hay jugador en esa posicion busca el proximo
 		}
-		columna=posicion[c]%8;
+		columna=*(pposicion+c)%8;
 		if(columna==0){columna=8;}
-		fila=(posicion[c]-columna)/8;
+		fila=(*(pposicion+c)-columna)/8;
 
 		dado=rand()%8+1;
 		registro=0;
@@ -91,10 +93,10 @@ system("pause");
                                     break;
                                     break;
                                 }
-                        if(nueva[posicion[c]]!=0){  // hay un colombiano o un venezolano
+                        if(nueva[*(pposicion+c)]!=0){  // hay un colombiano o un venezolano
                             p=1;                    // cambia la condicion para buscar otro colombiano
-                        columna=posicion[c]%8;
-                        fila=(posicion[c]-columna)/8;
+                        columna=*(pposicion+c)%8;
+                        fila=(*(pposicion+c)-columna)/8;
                         dado=rand()%8+1;
                         registro=0;
                         }
@@ -109,9 +111,9 @@ system("pause");
 }else{
         j=0;
 		c=rand()%2+11;
-		columna=posicion[c]%8;
+		columna=*(pposicion+c)%8;
 		if(columna==0){columna=8;}
-		fila=(posicion[c]-columna)/8;
+		fila=(*(pposicion+c)-columna)/8;
 		dado=rand()%8+1;
         while(j!=1){
                 if(dado==1){
@@ -164,7 +166,7 @@ return(0);
 void movimiento(int alfa, int beta, int omega){
 if(0<alfa && alfa<9 && 0<=beta && beta<8){
                             for(int k=1;k<=12;k++){
-                                if(k!=c && posicion[k]==(alfa+(beta*8))){
+                                if(k!=c && *(pposicion+k)==(alfa+(beta*8))){
                                     if(dado==8){dado=1; registro++;}else{dado++; registro++;}
                                      if(registro==8){
                                         dado=9;
@@ -175,9 +177,9 @@ if(0<alfa && alfa<9 && 0<=beta && beta<8){
 
                             }
                             if(dado==omega){
-                                nueva[posicion[c]]=0;
-                                posicion[c]=alfa+(beta*8);
-                                nueva[posicion[c]]=1;
+                                nueva[*(pposicion+c)]=0;
+                                *(pposicion+c)=alfa+(beta*8);
+                                nueva[*(pposicion+c)]=1;
                                 j=1;
                             }
 
@@ -193,7 +195,7 @@ if(0<alfa && alfa<9 && 0<=beta && beta<8){
 void movimiento_venezolano(int gamma, int epsilon, int pi){
     if( 0<gamma && gamma<9 && 0<=epsilon && epsilon<8){
                            for(int x=11;x<=12;x++){
-                                if(x!=c && posicion[x]==gamma+(epsilon*8)){
+                                if(x!=c && *(pposicion+x)==gamma+(epsilon*8)){
                                         if(pi==8){dado=1;}else{dado++;}
 
                                     break;
@@ -201,9 +203,9 @@ void movimiento_venezolano(int gamma, int epsilon, int pi){
                                     }
 
                                     if(dado==pi){
-                                    nueva[posicion[c]]=0;
-                                    posicion[c]=gamma+(epsilon*8);
-                                    nueva[posicion[c]]=2;
+                                    nueva[*(pposicion+c)]=0;
+                                    *(pposicion+c)=gamma+(epsilon*8);
+                                    nueva[*(pposicion+c)]=2;
                                     j=1;}
                      }else{
                      if(pi==8){dado=1;}else{dado++;}

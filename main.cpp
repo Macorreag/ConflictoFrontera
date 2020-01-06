@@ -8,21 +8,34 @@
 using namespace std;
 
 int i, *pposicion,m, *pnueva, inicio, l, c, columna, fila, registro, dado, p, j,z, temporal, conclusion;
+
 void movimiento(int , int , int );
 void movimiento_venezolano(int , int , int );
 void impresiontablero(int *pnueva);
 string recorte(string cadena);
 
-main(){
 
+int main(){
+    struct casilla{
+                int contenido;
+                string * nombre;
 
-cout<<"Bienvenido a conflicto en la frontera"<<endl;
-cout <<"ingrese el nombre de el  colombiano"<<1<<":";
+    };
+    struct casilla posicion[13];
+    struct nombre {
+            string nombre;
+                };
+                struct nombre directorio[13];
+cout<<"-------------------Bienvenido a conflicto en la frontera-------------------"<<endl;
 
-string cad1;
-cin>>cad1;
-cout<<recorte(cad1);
-
+for (int x=1;x<=10;x++){
+        cout <<"ingrese el nombre de el  colombiano "<<x<<":";
+        string cad1;
+        cin>>cad1;
+        directorio[x].nombre=recorte(cad1);
+        posicion[x].nombre=&directorio[x].nombre;
+        cout<<"el nombre asignado al colombiano fue:"<<*(posicion[x].nombre)<<endl;
+}
 
 
 
@@ -243,18 +256,20 @@ void impresiontablero(int nueva[]){
                                 }
 
 }
+
 string recorte(string cadena){
-string cad3;
+string cad3="-----";
 string cad2="-----";
+int borrado =1;
 cad3 = cadena.substr(0,5);
-if(cad3[0]=='\0'||cad3[1]=='\0'||cad3[2]=='\0'||cad3[3]=='\0'||cad3[4]=='\0'){
+if(cad3[1]=='\0'||cad3[2]=='\0'||cad3[3]=='\0'||cad3[4]=='\0'){
                     cad2[0]=cad3[0];
-                    if (cad3[1]==' '||cad3[1]=='\0'){cad2[1]='-';}else{cad2[1]=cad3[1];}
-                    if (cad3[2]==' '||cad3[2]=='\0'){cad2[2]='-';}else{cad2[2]=cad3[2];}
-                    if (cad3[3]==' '||cad3[3]=='\0'){cad2[3]='-';}else{cad2[3]=cad3[3];}
+
+                    if (cad3[1]==' '||cad3[1]=='\0'){cad2[1]='-';cad2[2]='-';cad2[3]='-';borrado++;return cad2;}else{cad2[1]=cad3[1];}
+                    if (cad3[2]==' '||cad3[2]=='\0'&&borrado==1){cad2[2]='-';cad2[3]='-';borrado++;return cad2;}else{cad2[2]=cad3[2];}
+                    if (cad3[3]==' '||cad3[3]=='\0'&&borrado==1){cad2[3]='-';return cad2;}else{cad2[3]=cad3[3];}
                     cad2[4]='-';
                     return cad2;
                     }else{return cad3;}
 }
-
 

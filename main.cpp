@@ -9,7 +9,7 @@ using namespace std;
 
 int i,m, inicio, l, c, columna, fila, registro, dado, p, j,z, temporal, conclusion;
 struct casilla *pnueva;
-
+string vacio="같같�";
 void movimiento(int , int , int );
 void movimiento_venezolano(int , int , int );
 void impresiontablero( casilla *pnueva);
@@ -20,35 +20,24 @@ string recorte(string cadena);
 
     };
     struct casilla posicion[13];
-
+    struct nombre {
+            string nombre;
+                };
+    struct nombre directorio[13];
 
 int main(){
-    string vacio="같같�";
+
 pnueva=new struct casilla[65];
+
 for(int x=1;x<65;x++)
         {
             (pnueva+x)->contenido=0;         //rellena el vector de "0"
             (pnueva+x)->nombre=&vacio;
         }
 
-struct nombre {
-            string nombre;
-                };
-                struct nombre directorio[13];
+
+
 cout<<"-------------------Bienvenido a conflicto en la frontera-------------------"<<endl;
-
-for (int x=1;x<=10;x++){
-        cout <<"ingrese el nombre de el  colombiano "<<x<<":";
-        string cad1;
-        cin>>cad1;
-        directorio[x].nombre=recorte(cad1);
-        posicion[x].nombre=&directorio[x].nombre;
-        cout<<"el nombre asignado al colombiano fue:"<<*(posicion[x].nombre)<<endl;
-}
-
-
-
-
 
 
 //pposicion=new int [13];
@@ -72,16 +61,38 @@ srand(time(NULL));
 
    }
 
+
+   for (int x=1;x<=12;x++){
+        if(x<11){cout <<"ingrese el nombre de el  colombiano "<<x<<":";}else{cout <<"ingrese el nombre de el  venezolano "<<x<<":";}
+        string cad1;
+        cin>>cad1;
+        directorio[x].nombre=recorte(cad1);
+        posicion[x].nombre=&directorio[x].nombre; //direcciona el apuntador hacia el nombre
+
+        if(x<11){cout<<"el nombre asignado al colombiano fue:"<<*(posicion[x].nombre)<<endl;}else
+            {
+                cout<<"el nombre asignado al venezolano  fue:"<<*(posicion[x].nombre)<<endl;
+            }
+        (pnueva+posicion[x].contenido)->nombre=posicion[x].nombre;
+
+
+}
+ system("cls");
    cout<<"la posicion inicial del juego es "<<endl;
 cout<<" "<<endl;
 for(inicio=1;inicio<65;inicio+=8){
-cout<<" "<<(pnueva+inicio)->contenido<<" "<<(pnueva+inicio+1)->contenido<<" "<<(pnueva+inicio+2)->contenido<<" "<<(pnueva+inicio+3)->contenido<<" "<<(pnueva+inicio+4)->contenido<<" "<<(pnueva+inicio+5)->contenido<<" "<<(pnueva+inicio+6)->contenido<<" "<<(pnueva+inicio+7)->contenido<<endl;
+cout<<"   "<<(pnueva+inicio)->contenido<<"     "<<(pnueva+inicio+1)->contenido<<"     "<<(pnueva+inicio+2)->contenido<<"     "<<(pnueva+inicio+3)->contenido<<"     "<<(pnueva+inicio+4)->contenido<<"     "<<(pnueva+inicio+5)->contenido<<"     "<<(pnueva+inicio+6)->contenido<<"     "<<(pnueva+inicio+7)->contenido<<endl;
+cout<<" "<<*((pnueva+inicio)->nombre)<<" "<<*((pnueva+inicio+1)->nombre)<<" "<<*((pnueva+inicio+2)->nombre)<<" "<<*((pnueva+inicio+3)->nombre)<<" "<<*((pnueva+inicio+4)->nombre)<<" "<<*((pnueva+inicio+5)->nombre)<<" "<<*((pnueva+inicio+6)->nombre)<<" "<<*((pnueva+inicio+7)->nombre)<<endl;
+
 }
+
 
 
 
 for(l=1;l<=20;l++){
 system("pause");
+//system("cls");
+
         j=0;
 		if(l%2==1){
 		c=rand()%10+1;
@@ -193,8 +204,11 @@ cout<<" "<<endl;
 
 
 for(inicio=1;inicio<65;inicio+=8){
-cout<<" "<<(pnueva+inicio)->contenido<<" "<<(pnueva+inicio+1)->contenido<<" "<<(pnueva+inicio+2)->contenido<<" "<<(pnueva+inicio+3)->contenido<<" "<<(pnueva+inicio+4)->contenido<<" "<<(pnueva+inicio+5)->contenido<<" "<<(pnueva+inicio+6)->contenido<<" "<<(pnueva+inicio+7)->contenido<<endl;
+cout<<"   "<<(pnueva+inicio)->contenido<<"     "<<(pnueva+inicio+1)->contenido<<"     "<<(pnueva+inicio+2)->contenido<<"     "<<(pnueva+inicio+3)->contenido<<"     "<<(pnueva+inicio+4)->contenido<<"     "<<(pnueva+inicio+5)->contenido<<"     "<<(pnueva+inicio+6)->contenido<<"     "<<(pnueva+inicio+7)->contenido<<endl;
+cout<<" "<<*((pnueva+inicio)->nombre)<<" "<<*((pnueva+inicio+1)->nombre)<<" "<<*((pnueva+inicio+2)->nombre)<<" "<<*((pnueva+inicio+3)->nombre)<<" "<<*((pnueva+inicio+4)->nombre)<<" "<<*((pnueva+inicio+5)->nombre)<<" "<<*((pnueva+inicio+6)->nombre)<<" "<<*((pnueva+inicio+7)->nombre)<<endl;
+
 }
+
 }
 for(z=1;z<=64;z++){
     if((pnueva+z)->contenido==1){
@@ -222,7 +236,9 @@ if(0<alfa && alfa<9 && 0<=beta && beta<8){
                             }
                             if(dado==omega){
                                 (pnueva+posicion[c].contenido)->contenido=0;
+                                (pnueva+posicion[c].contenido)->nombre=&vacio;
                                 posicion[c].contenido=alfa+(beta*8);
+                                (pnueva+posicion[c].contenido)->nombre=posicion[c].nombre;
                                 (pnueva+posicion[c].contenido)->contenido=1;
                                 j=1;
                             }
@@ -247,8 +263,25 @@ void movimiento_venezolano(int gamma, int epsilon, int pi){
                                     }
 
                                     if(dado==pi){
+
                                     (pnueva+posicion[c].contenido)->contenido=0;
+                                    (pnueva+posicion[c].contenido)->nombre=&vacio;
                                     posicion[c].contenido=gamma+(epsilon*8);
+                                    if((pnueva+posicion[c].contenido)->contenido==1)
+                                    {
+                                        cout<<"Ha sido capturado el  colombiano de nombre :";
+                                        for(int y=1;y<11;y++)
+                                        {
+                                            if((posicion[c].contenido)==posicion[y].contenido)
+                                            {
+                                                cout<<*(posicion[y].nombre)<<endl;
+
+                                            }
+                                    }
+                                    }
+                                    (pnueva+posicion[c].contenido)->nombre=posicion[c].nombre;
+
+
                                     (pnueva+posicion[c].contenido)->contenido=2;
                                     j=1;}
                      }else{
@@ -272,4 +305,5 @@ if(cad3[1]=='\0'||cad3[2]=='\0'||cad3[3]=='\0'||cad3[4]=='\0'){
                     return cad2;
                     }else{return cad3;}
 }
+
 

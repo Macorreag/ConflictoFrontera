@@ -6,20 +6,17 @@
 
 using namespace std;
 
-int i, posicion[12],m, nueva[65]={0}, inicio, l, c, columna, fila, registro, dado, p, j,z, temporal, conclusion,media;
+int i, posicion[12],m, nueva[65]={0}, inicio, l, c, columna, fila, registro, dado, p, j,z, temporal, conclusion;
 void movimiento(int , int , int );
 void movimiento_venezolano(int , int , int );
+void impresiontablero(int nueva[]);
 
 
 main(){
 
-
-
-
 srand(time(NULL));
    for(i=1;i<=12;i++){
     posicion[i]=1 + rand()%63;
-
    for(m=1;m<i;m++){
         if(posicion[i]== posicion[m]){
             i=i-1;
@@ -34,22 +31,25 @@ srand(time(NULL));
 
    }
 
-cout<<"la posicion inicial del juego es "<<endl;
+   cout<<"la posicion inicial del juego es "<<endl;
 cout<<" "<<endl;
-for(inicio=1;inicio<65;inicio+=8){
-cout<<" "<<nueva[inicio]<<" "<<nueva[inicio+1]<<" "<<nueva[inicio+2]<<" "<<nueva[inicio+3]<<" "<<nueva[inicio+4]<<" "<<nueva[inicio+5]<<" "<<nueva[inicio+6]<<" "<<nueva[inicio+7]<<endl;
-}
+impresiontablero(nueva);
+
+
+
+
 for(l=1;l<=20;l++){
 system("pause");
         j=0;
 		if(l%2==1){
 		c=rand()%10+1;
 		while(nueva[posicion[c]]==0 || nueva[posicion[c]]==2){
-		if(c==10){c=1;}else{c++;}
+		if(c==10){c=1;}else{c++;}       // si no hay jugador en esa posicion busca el proximo
 		}
 		columna=posicion[c]%8;
 		if(columna==0){columna=8;}
 		fila=(posicion[c]-columna)/8;
+
 		dado=rand()%8+1;
 		registro=0;
 		while(j!=1){
@@ -79,20 +79,20 @@ system("pause");
                 }
                 if(dado==9){
                         while(p==0){
-                                if(c==10){
-                                c=1;
+                                if(c==10){ // el ultimo colombiano
+                                c=1;        //pasa al primer colombiano
                                 }else{
                                 c=c+1;
                                 }
-                                temporal=temporal+1;
+                                temporal=temporal+1; // recorrio los die< campos colombianos y no estan
                                 if(temporal==10){
                                     cout<<" todos los colombianos fueron capturados"<<endl;
                                     break;
                                     break;
                                     break;
                                 }
-                        if(nueva[posicion[c]]!=0){
-                            p=1;
+                        if(nueva[posicion[c]]!=0){  // hay un colombiano o un venezolano
+                            p=1;                    // cambia la condicion para buscar otro colombiano
                         columna=posicion[c]%8;
                         fila=(posicion[c]-columna)/8;
                         dado=rand()%8+1;
@@ -113,7 +113,7 @@ system("pause");
 		if(columna==0){columna=8;}
 		fila=(posicion[c]-columna)/8;
 		dado=rand()%8+1;
-        while(j!=1){            //se sale cuando  hace el movimiento
+        while(j!=1){
                 if(dado==1){
                     movimiento_venezolano((columna+1),(fila-2), dado);
                 }
@@ -148,11 +148,7 @@ system("pause");
         cout<<" "<<endl;
         cout<<"el resultado del movimiento "<<l<<" es"<<endl;
 cout<<" "<<endl;
-for(z=1;z<=64;z+=8){
-    cout<<" "<<nueva[z]<<" "<<nueva[z+1]<<" "<<nueva[z+2]<<" "<<nueva[z+3]<<" "<<nueva[z+4]<<" "<<nueva[z+5]<<" "<<nueva[z+6]<<" "<<nueva[z+7]<<endl;
-
-
-}
+impresiontablero(nueva);
 }
 for(z=1;z<=64;z++){
     if(nueva[z]==1){
@@ -162,12 +158,12 @@ for(z=1;z<=64;z++){
 cout<<endl;
 cout<<"tras 20 movimientos fueron capturados "<<10-conclusion<<" colombianos "<<endl;
 
+return(0);
 }
 
 void movimiento(int alfa, int beta, int omega){
-int k;
 if(0<alfa && alfa<9 && 0<=beta && beta<8){
-                            for(k=1;k<=12;k++){
+                            for(int k=1;k<=12;k++){
                                 if(k!=c && posicion[k]==(alfa+(beta*8))){
                                     if(dado==8){dado=1; registro++;}else{dado++; registro++;}
                                      if(registro==8){
@@ -195,9 +191,8 @@ if(0<alfa && alfa<9 && 0<=beta && beta<8){
 }
 
 void movimiento_venezolano(int gamma, int epsilon, int pi){
-    int x;
-if( 0<gamma && gamma<9 && 0<=epsilon && epsilon<8){
-                           for(x=11;x<=12;x++){
+    if( 0<gamma && gamma<9 && 0<=epsilon && epsilon<8){
+                           for(int x=11;x<=12;x++){
                                 if(x!=c && posicion[x]==gamma+(epsilon*8)){
                                         if(pi==8){dado=1;}else{dado++;}
 
@@ -215,24 +210,13 @@ if( 0<gamma && gamma<9 && 0<=epsilon && epsilon<8){
                      }
 
 }
+void impresiontablero(int nueva[]){
+ for(int filar=0;filar<8;filar++){          //impresion tras 1 movimiento
 
+            for(int columnar=1;columnar<9;columnar++){
+                    cout << nueva[columnar+(filar*8)]<<" ";
+                                                    }
+                cout<<endl;
+                                }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}

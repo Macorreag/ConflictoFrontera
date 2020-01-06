@@ -8,7 +8,7 @@
 using namespace std;
 
 int i,m, inicio, l, c, columna, fila, registro, dado, p, j,z, temporal, conclusion;
-struct casilla *pnueva;
+struct casilla *pnueva,*pposicion;
 string vacio="°°°°°";
 void movimiento(int , int , int );
 void movimiento_venezolano(int , int , int );
@@ -19,7 +19,7 @@ string recorte(string cadena);
                 string * nombre;
 
     };
-    struct casilla posicion[13];
+
     struct nombre {
             string nombre;
                 };
@@ -28,6 +28,7 @@ string recorte(string cadena);
 int main(){
 
 pnueva=new struct casilla[65];
+pposicion= new struct casilla[13];
 
 for(int x=1;x<65;x++)
         {
@@ -40,23 +41,20 @@ for(int x=1;x<65;x++)
 cout<<"-------------------Bienvenido a conflicto en la frontera-------------------"<<endl;
 
 
-//pposicion=new int [13];
-
-
 srand(time(NULL));
    for(i=1;i<=12;i++){
-    posicion[i].contenido=1 + rand()%63;
+    (pposicion+i)->contenido=1 + rand()%63;
    for(m=1;m<i;m++){
-        if(posicion[i].contenido==posicion[m].contenido){
+        if((pposicion+i)->contenido==(pposicion+m)->contenido){
             i=i-1;
             break;
         }
     }
     if(i<=10){
-            (pnueva+posicion[i].contenido)->contenido=1; //pone el jugador colombiano dentro del tablero
+            (pnueva+(pposicion+i)->contenido)->contenido=1; //pone el jugador colombiano dentro del tablero
 
         }else{
-            (pnueva+posicion[i].contenido)->contenido=2;    //pone el jugador venezolano dentro del tablero
+            (pnueva+(pposicion+i)->contenido)->contenido=2;    //pone el jugador venezolano dentro del tablero
         }
 
    }
@@ -67,13 +65,13 @@ srand(time(NULL));
         string cad1;
         cin>>cad1;
         directorio[x].nombre=recorte(cad1);
-        posicion[x].nombre=&directorio[x].nombre; //direcciona el apuntador hacia el nombre
+        (pposicion+x)->nombre=&directorio[x].nombre; //direcciona el apuntador hacia el nombre
 
-        if(x<11){cout<<"el nombre asignado al colombiano fue:"<<*(posicion[x].nombre)<<endl;}else
+        if(x<11){cout<<"el nombre asignado al colombiano fue:"<<*((pposicion+x)->nombre)<<endl;}else
             {
-                cout<<"el nombre asignado al venezolano  fue:"<<*(posicion[x].nombre)<<endl;
+                cout<<"el nombre asignado al venezolano  fue:"<<*((pposicion+x)->nombre)<<endl;
             }
-        (pnueva+posicion[x].contenido)->nombre=posicion[x].nombre;
+        (pnueva+((pposicion+x)->contenido))->nombre=(pposicion+x)->nombre;
 
 
 }
@@ -96,12 +94,12 @@ system("pause");
         j=0;
 		if(l%2==1){
 		c=rand()%10+1;
-		while((pnueva+posicion[c].contenido)->contenido==0 || (pnueva+posicion[c].contenido)->contenido==2){
+		while((pnueva+((pposicion+c)->contenido))->contenido==0 ||(pnueva+((pposicion+c)->contenido))->contenido==2){
 		if(c==10){c=1;}else{c++;}       // si no hay jugador en esa posicion busca el proximo
 		}
-		columna=posicion[c].contenido%8;
+		columna=((pposicion+c)->contenido)%8;
 		if(columna==0){columna=8;}
-		fila=(posicion[c].contenido-columna)/8;
+		fila=(((pposicion+c)->contenido)-columna)/8;
 
 		dado=rand()%8+1;
 		registro=0;
@@ -144,10 +142,10 @@ system("pause");
                                     break;
                                     break;
                                 }
-                        if((pnueva+posicion[c].contenido)->contenido!=0){  // hay un colombiano o un venezolano
+                        if((pnueva+(pposicion+c)->contenido)->contenido!=0){  // hay un colombiano o un venezolano
                             p=1;                    // cambia la condicion para buscar otro colombiano
-                        columna=posicion[c].contenido%8;
-                        fila=(posicion[c].contenido-columna)/8;
+                        columna=(pposicion+c)->contenido%8;
+                        fila=(((pposicion+c)->contenido)-columna)/8;
                         dado=rand()%8+1;
                         registro=0;
                         }
@@ -162,9 +160,9 @@ system("pause");
 }else{
         j=0;
 		c=rand()%2+11;
-		columna=posicion[c].contenido%8;
+		columna=((pposicion+c)->contenido)%8;
 		if(columna==0){columna=8;}
-		fila=(posicion[c].contenido-columna)/8;
+		fila=(((pposicion+c)->contenido)-columna)/8;
 		dado=rand()%8+1;
         while(j!=1){
                 if(dado==1){
@@ -224,7 +222,7 @@ return(0);
 void movimiento(int alfa, int beta, int omega){
 if(0<alfa && alfa<9 && 0<=beta && beta<8){
                             for(int k=1;k<=12;k++){
-                                if(k!=c && posicion[k].contenido==(alfa+(beta*8))){
+                                if(k!=c && (pposicion+k)->contenido==(alfa+(beta*8))){
                                     if(dado==8){dado=1; registro++;}else{dado++; registro++;}
                                      if(registro==8){
                                         dado=9;
@@ -235,11 +233,11 @@ if(0<alfa && alfa<9 && 0<=beta && beta<8){
 
                             }
                             if(dado==omega){
-                                (pnueva+posicion[c].contenido)->contenido=0;
-                                (pnueva+posicion[c].contenido)->nombre=&vacio;
-                                posicion[c].contenido=alfa+(beta*8);
-                                (pnueva+posicion[c].contenido)->nombre=posicion[c].nombre;
-                                (pnueva+posicion[c].contenido)->contenido=1;
+                                (pnueva+(pposicion+c)->contenido)->contenido=0;
+                                (pnueva+(pposicion+c)->contenido)->nombre=&vacio;
+                                (pposicion+c)->contenido=alfa+(beta*8);
+                                (pnueva+(pposicion+c)->contenido)->nombre=(pposicion+c)->nombre;
+                                (pnueva+(pposicion+c)->contenido)->contenido=1;
                                 j=1;
                             }
 
@@ -255,7 +253,7 @@ if(0<alfa && alfa<9 && 0<=beta && beta<8){
 void movimiento_venezolano(int gamma, int epsilon, int pi){
     if( 0<gamma && gamma<9 && 0<=epsilon && epsilon<8){
                            for(int x=11;x<=12;x++){
-                                if(x!=c && posicion[x].contenido==gamma+(epsilon*8)){
+                                if(x!=c && (pposicion+x)->contenido==gamma+(epsilon*8)){
                                         if(pi==8){dado=1;}else{dado++;}
 
                                     break;
@@ -264,25 +262,25 @@ void movimiento_venezolano(int gamma, int epsilon, int pi){
 
                                     if(dado==pi){
 
-                                    (pnueva+posicion[c].contenido)->contenido=0;
-                                    (pnueva+posicion[c].contenido)->nombre=&vacio;
-                                    posicion[c].contenido=gamma+(epsilon*8);
-                                    if((pnueva+posicion[c].contenido)->contenido==1)
+                                    (pnueva+(pposicion+c)->contenido)->contenido=0;
+                                    (pnueva+(pposicion+c)->contenido)->nombre=&vacio;
+                                    (pposicion+c)->contenido=gamma+(epsilon*8);
+                                    if((pnueva+(pposicion+c)->contenido)->contenido==1)
                                     {
                                         cout<<"Ha sido capturado el  colombiano de nombre :";
                                         for(int y=1;y<11;y++)
                                         {
-                                            if((posicion[c].contenido)==posicion[y].contenido)
+                                            if(((pposicion+c)->contenido)==(pposicion+y)->contenido)
                                             {
-                                                cout<<*(posicion[y].nombre)<<endl;
+                                                cout<<*((pposicion+y)->nombre)<<endl;
 
                                             }
                                     }
                                     }
-                                    (pnueva+posicion[c].contenido)->nombre=posicion[c].nombre;
+                                    (pnueva+(pposicion+c)->contenido)->nombre=(pposicion+c)->nombre;
 
 
-                                    (pnueva+posicion[c].contenido)->contenido=2;
+                                    (pnueva+(pposicion+c)->contenido)->contenido=2;
                                     j=1;}
                      }else{
                      if(pi==8){dado=1;}else{dado++;}

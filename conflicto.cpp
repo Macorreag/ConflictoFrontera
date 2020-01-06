@@ -1,3 +1,4 @@
+
 #include<iostream>
 #include<cstdlib>
 #include<stdio.h>
@@ -6,20 +7,15 @@
 
 using namespace std;
 
-int i, posicion[12],m, nueva[65]={0}, inicio, l, c, columna, fila, registro, dado, p, j,z, temporal, conclusion,media;
+int i, posicion[12],m, nueva[65]={0}, inicio, l, c, columna, fila, registro, dado, p, j,z, temporal, conclusion;
 void movimiento(int , int , int );
 void movimiento_venezolano(int , int , int );
 
-
 main(){
-
-
-
 
 srand(time(NULL));
    for(i=1;i<=12;i++){
     posicion[i]=1 + rand()%63;
-
    for(m=1;m<i;m++){
         if(posicion[i]== posicion[m]){
             i=i-1;
@@ -34,7 +30,7 @@ srand(time(NULL));
 
    }
 
-cout<<"la posicion inicial del juego es "<<endl;
+   cout<<"la posicion inicial del juego es "<<endl;
 cout<<" "<<endl;
 for(inicio=1;inicio<65;inicio+=8){
 cout<<" "<<nueva[inicio]<<" "<<nueva[inicio+1]<<" "<<nueva[inicio+2]<<" "<<nueva[inicio+3]<<" "<<nueva[inicio+4]<<" "<<nueva[inicio+5]<<" "<<nueva[inicio+6]<<" "<<nueva[inicio+7]<<endl;
@@ -113,7 +109,7 @@ system("pause");
 		if(columna==0){columna=8;}
 		fila=(posicion[c]-columna)/8;
 		dado=rand()%8+1;
-        while(j!=1){            //se sale cuando  hace el movimiento
+        while(j!=1){
                 if(dado==1){
                     movimiento_venezolano((columna+1),(fila-2), dado);
                 }
@@ -162,6 +158,7 @@ for(z=1;z<=64;z++){
 cout<<endl;
 cout<<"tras 20 movimientos fueron capturados "<<10-conclusion<<" colombianos "<<endl;
 
+return(0);
 }
 
 void movimiento(int alfa, int beta, int omega){
@@ -215,21 +212,6 @@ if( 0<gamma && gamma<9 && 0<=epsilon && epsilon<8){
                      }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

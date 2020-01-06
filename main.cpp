@@ -3,18 +3,27 @@
 #include<stdio.h>
 #include<ctime>
 #include<windows.h>
+#include <string>
 
 using namespace std;
 
-int i, *pposicion,m, nueva[65]={0}, inicio, l, c, columna, fila, registro, dado, p, j,z, temporal, conclusion;
+int i, *pposicion,m, *pnueva, inicio, l, c, columna, fila, registro, dado, p, j,z, temporal, conclusion;
 void movimiento(int , int , int );
 void movimiento_venezolano(int , int , int );
-void impresiontablero(int nueva[]);
+void impresiontablero(int *pnueva);
 
 
 main(){
 
+
+
 pposicion=new int [13];
+pnueva=new int [65];
+for(int x=1;x<65;x++)
+        {
+            *(pnueva+x)=0;         //rellena el vector de "0"
+        }
+
 
 srand(time(NULL));
    for(i=1;i<=12;i++){
@@ -26,16 +35,16 @@ srand(time(NULL));
         }
     }
     if(i<=10){
-            nueva[*(pposicion+i)]=1;
+            *(pnueva+*(pposicion+i))=1;
         }else{
-            nueva[*(pposicion+i)]=2;
+            *(pnueva+*(pposicion+i))=2;
         }
 
    }
 
    cout<<"la posicion inicial del juego es "<<endl;
 cout<<" "<<endl;
-impresiontablero(nueva);
+impresiontablero(pnueva);
 
 
 
@@ -45,7 +54,7 @@ system("pause");
         j=0;
 		if(l%2==1){
 		c=rand()%10+1;
-		while(nueva[*(pposicion+c)]==0 || nueva[*(pposicion+c)]==2){
+		while(*(pnueva+*(pposicion+c))==0 || *(pnueva+*(pposicion+c))==2){
 		if(c==10){c=1;}else{c++;}       // si no hay jugador en esa posicion busca el proximo
 		}
 		columna=*(pposicion+c)%8;
@@ -93,7 +102,7 @@ system("pause");
                                     break;
                                     break;
                                 }
-                        if(nueva[*(pposicion+c)]!=0){  // hay un colombiano o un venezolano
+                        if(*(pnueva+*(pposicion+c))!=0){  // hay un colombiano o un venezolano
                             p=1;                    // cambia la condicion para buscar otro colombiano
                         columna=*(pposicion+c)%8;
                         fila=(*(pposicion+c)-columna)/8;
@@ -150,10 +159,10 @@ system("pause");
         cout<<" "<<endl;
         cout<<"el resultado del movimiento "<<l<<" es"<<endl;
 cout<<" "<<endl;
-impresiontablero(nueva);
+impresiontablero(pnueva);
 }
 for(z=1;z<=64;z++){
-    if(nueva[z]==1){
+    if(*(pnueva+z)==1){
         conclusion++;
     }
 }
@@ -177,9 +186,9 @@ if(0<alfa && alfa<9 && 0<=beta && beta<8){
 
                             }
                             if(dado==omega){
-                                nueva[*(pposicion+c)]=0;
+                                *(pnueva+*(pposicion+c))=0;
                                 *(pposicion+c)=alfa+(beta*8);
-                                nueva[*(pposicion+c)]=1;
+                                *(pnueva+*(pposicion+c))=1;
                                 j=1;
                             }
 
@@ -203,9 +212,9 @@ void movimiento_venezolano(int gamma, int epsilon, int pi){
                                     }
 
                                     if(dado==pi){
-                                    nueva[*(pposicion+c)]=0;
+                                    *(pnueva+*(pposicion+c))=0;
                                     *(pposicion+c)=gamma+(epsilon*8);
-                                    nueva[*(pposicion+c)]=2;
+                                    *(pnueva+*(pposicion+c))=2;
                                     j=1;}
                      }else{
                      if(pi==8){dado=1;}else{dado++;}
@@ -216,7 +225,7 @@ void impresiontablero(int nueva[]){
  for(int filar=0;filar<8;filar++){          //impresion tras 1 movimiento
 
             for(int columnar=1;columnar<9;columnar++){
-                    cout << nueva[columnar+(filar*8)]<<" ";
+                    cout << *(pnueva+(columnar+(filar*8)))<<" ";
                                                     }
                 cout<<endl;
                                 }

@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1446957627 source:c:\users\miller\documents\poo\conflicto 4\main.cpp
+	<iostream>
+	<cstdlib>
+	<stdio.h>
+	<ctime>
+	<windows.h>
+

@@ -1,378 +1,546 @@
-
-#include <iostream>
-#include <cstdlib>
-#include <stdio.h>
-#include <ctime>
-#include <windows.h>
+#include<iostream>
+#include<cstdlib>
+#include<stdio.h>
+#include<ctime>
+//#include<windows.h>
 
 using namespace std;
 
-int ponervenezolano(int movimientocasilla,int *pvector){
-            *pvector=0;
-            pvector=pvector+movimientocasilla;
-            *pvector=2;
-            pvector=pvector-movimientocasilla;
-            return 1;
+int media, *pposicion,*pnueva,i,m,j,c,l,p,columna, fila, registro, dado,temporal,z,conclusion;
+
+void movimiento(int , int , int );
+
+void movimiento_venezolano(int , int , int );
 
 
-}
-int ponercolombiano(int movimientocasilla,int *pvector,int verificador){ //quitar a verificado no hace nada
-            *pvector=0;
-            pvector=pvector+movimientocasilla;
-            *pvector=1;
-            pvector=pvector-movimientocasilla;
-            return 1;
+void impresiontablero (int *pvector){
 
+ for(int filar=0;filar<8;filar++){          //impresion tras 1 movimiento
 
-}
-int saltovalidocolombia (int *pvector,int movimientocasilla ) //
-{
-    pvector+=movimientocasilla;
-    if (*pvector==0){return 0;}else{ return 1;}
-    pvector-=movimientocasilla;
-
-}
-
-int contenidoV(int *pvector,int movimientocasilla,int colombianosmuertos){
-    pvector+=movimientocasilla;
-
-    if(*pvector==2)    //vigila que un gusrdia no caiga sobre la guardia
-    {   pvector-=movimientocasilla;
-        return 1;
-    }else{
-        if (*pvector==1){colombianosmuertos++;}
-        pvector-=movimientocasilla;
-        return 0;}
-
-}
-int contenido(int *pvector,int movimientocasilla){
-    pvector+=movimientocasilla;
-    if(*pvector==2||*pvector==1)    //vigila que un colombiano no caiga sobre la guardia ni sobre un compañero
-    {   pvector-=movimientocasilla;
-        return 1;
-    }else{pvector-=movimientocasilla;
-        return 0;}
-
-}
-
-int llenarfichas(int *pfichas,int numeroficha,int aleatorio){
-        pfichas=pfichas+numeroficha;
-
-        *pfichas=aleatorio;
-        cout<<*pfichas<<endl;
-
-
-
-        pfichas=pfichas-numeroficha;
-}
-
-
-void impresiontablero (int *pvector,int *pFilas,int *pColumnas){
- for(int fila=0;fila<8;fila++){          //impresion tras 1 movimiento
                 cout<<endl;
 
-            for(int columna=0;columna<8;columna++){
-            cout << *pvector<<" ";
+            for(int columnar=0;columnar<8;columnar++){
 
-            *pFilas=fila;
-            pFilas++;
-            *pColumnas=columna;
-            pColumnas++;
-            pvector++;
+            cout << *(pvector+(filar*8+columnar))<<" ";
+
+
+
             }
-                }       pvector-=64;
-                        pFilas-=64;
-                        pColumnas-=64;
+
+                }
+
                         cout<<endl;
-}
-void impresiontablerosolo (int *pvector){
- for(int fila=0;fila<8;fila++){          //impresion tras 1 movimiento
-                cout<<endl;
-            for(int columna=0;columna<8;columna++){
-            cout << *pvector<<" ";
-            pvector++;
-            }
-                }       pvector-=64;
-                        cout<<endl;
-}
-int Dado8(int movimiento){
-            if(movimiento==1){return -15;}
-            if(movimiento==2){return -6;}
-            if(movimiento==3){return +10;}
-            if(movimiento==4){return +17;}
-            if(movimiento==5){return +15;}
-            if(movimiento==6){return +6;}
-            if(movimiento==7){return -10;}
-            if(movimiento==8){return -17;}
+
 }
 
-
-int main()
-{
-     srand(time(NULL));         // pone la semilla del relog
-        int *pvector ;              //apuntador hacia el vector
-        int *pfichas;               //apuntador hacia las fichas
-        int *pColumnas;              //apuntador hacia Columnas
-        int *pFilas;                 //apuntador hacia Filas
-        int *guardar;
-        int *guardarcol;
-
-    pColumnas=new int [64];         //separa 64 casillas de memoria
-    pFilas=new int [64];            //separa 64 casillas de memoria
-    pfichas=new int [12];           //ubicacion de los colombianos y venezolanos
-    pvector=new int  [64];          //separa 64 casillas de memoria
-
-    cout<<"ubicacion de apuntador pvector;"<<pvector<<endl;
+struct casilla{
+int contenido;
+char *nombrejugador;
+};
 
 
+struct colombiano{
+int posicion;
+};
 
-     for(int x=0;x<64;x++)
+
+main(){
+
+
+    char nombre[5];
+   // uno.nombrejugador=nombre;
+   struct colombiano jugador;
+    pposicion=new int[12];
+    pnueva=new int[65];
+    for(int x=0;x<64;x++)
         {
-            *pvector=0;         //rellena el vector de "0"
-            pvector++;
+            *(pnueva+x)=0;         //rellena el vector de "0"
+        }
+
+    cout<<"Ingrese su nombre:"<<endl;
+
+//cin>>uno.*nombrejugador;
+//uno.(nombrejugador+5)='\0';
+
+//    cout<<"Bienvenido "<<inicial.nombre<<endl;
+srand(time(NULL));
+
+for(i=0;i<12;i++){
+
+    media=1 + rand()%63;
+
+    *(pposicion+i)=media;
+
+
+
+   for(m=0;m<i;m++){
+
+
+
+        if(*(pposicion+i)==*(pposicion+m)){
+
+            i--;
+
+            break;
 
         }
 
-    pvector=pvector-64;        //pone el vector en la posicion inicial
-    if(pvector==NULL)
-    {
-        cout<<"No hay recursos";
-
     }
-    else{   int aleatorio;
-            int Nvenezolano;
-            int Ncolombiano;
-            int Ndado;
-            int verificador=0;         // verifica jugada realizada
-            int turno=0;
-            int suma=0;
-            int salto=0;
-            int colombianosmuertos=0;
+
+    if(i<10){
 
 
-            for(int x=0;x<2;x++){
-            aleatorio=rand()%63;                //ubica dos venezolanos
-            if((contenido(pvector,aleatorio))==1){
-            x--;}else{ponervenezolano(aleatorio,pvector);
-                        llenarfichas(pfichas,x,aleatorio);
+
+            *(pnueva+(*(pposicion+i)))=1;
+
+
+
+        }else{
+
+
+
+            *(pnueva+(*(pposicion+i)))=2;
+
+
+
+
+
+        }
+
+
+
+   }
+
+   cout<<"la posicion inicial del juego es "<<endl;
+
+   cout<<" "<<endl;
+
+
+
+   impresiontablero(pnueva);
+
+
+
+
+
+for(l=1;l<=20;l++){
+
+system("pause");
+
+
+
+
+
+        j=0;
+
+	if(l%2==1){                            //los impares son movimientos colombianos
+
+		c=rand()%10;          //que colombiano se mueve
+
+		while((*(pnueva+(*(pposicion+c))))==0 || (*(pnueva+(*(pposicion+c))))==2){ //si el colombiano no estï¿½ o si hay un venezolano
+
+		if(c==10){c=1;}else{c++;}           //busca el siguiente colombiano
+
+		}
+
+		columna=(*(pposicion+c))%8;
+   jugador.posicion= *(pposicion+c);
+
+                  //ESTABLECE LA COLUMNA EN la que esta
+
+		if(columna==0){columna=8;}
+
+		fila=((*(pposicion+c))-columna)/8;           //define la fila en la que esta
+
+		dado=rand()%8+1;                //define la jugada a hacer
+
+		registro=0;                 //
+
+		while(j!=1){
+
+                if(dado==1){
+
+                    movimiento((columna+1),(fila-2), dado);
+
+                }
+
+                if(dado==2){
+
+                    movimiento((columna+2),(fila-1), dado);
+
+                }
+
+                if(dado==3){
+
+                    movimiento((columna+2),(fila+1), dado);
+
+                }
+
+                if(dado==4){
+
+                    movimiento((columna+1),(fila+2), dado);
+
+                }
+
+                if(dado==5){
+
+                    movimiento((columna-1),(fila+2), dado);
+
+                }
+
+                if(dado==6){
+
+                    movimiento((columna-2),(fila+1), dado);
+
+                }
+
+                if(dado==7){
+
+                    movimiento((columna-2),(fila-1), dado);
+
+                }
+
+                if(dado==8){
+
+                    movimiento((columna-1),(fila-2), dado);
+
+                }
+
+                if(dado==9){            //cuando reviso todas las jugadas
+
+                        while(p==0){   //hasta que adonde se mueva el colombiano este ocupado
+
+                                if(c==9){ //si es el ultimmo colombiano el 10
+
+                                c=0;            // lo devuelve al primero
+
+                                }else{
+
+                                c=c+1;      //pasa al siguiente jugador
+
+                                }
+
+                                temporal=temporal+1; //
+
+                                if(temporal==10){
+
+                                    cout<<" todos los colombianos fueron capturados"<<endl;
+
+                                    break;
+
+                                    break;
+
+                                    break;
+
+
+
+                                }
+
+
+
+                        if((*(pnueva+(*(pposicion+c))))!=0){                //si a donde se mueve el colombiano  esta ocupado
+
+                            p=1;                                            //termina el ciclo
+
+                        columna=(*(pposicion+c))%8;                         //define la columna
+
+                        fila=((*(pposicion+c))-columna)/8;                  //define lA FILA
+
+                        dado=rand()%8+1;                                    //define el dado aleaorio otra vez
+
+                        registro=0;                                         ///no se que hace
+
                         }
-            }
-           pfichas+=2;                              //salta en el vector para poner posiciones de colombianos
 
-            for(int x=0 ;x<10;x++){                 //ubica 10 colombianos aleatorios
-            aleatorio=rand()%63;
-            if((contenido(pvector,aleatorio))==1){
-            x--;}else{ponercolombiano(aleatorio,pvector,verificador);
-                       llenarfichas(pfichas,x,aleatorio);
-                      }
-            }
-            pfichas-=2;                             //regresa el apuntador a ceros
-            impresiontablero(pvector,pFilas,pColumnas); //imprime tablero inicial define filas y columnas
-
-             for(int j=0;j<12;j++)
-            {
-                cout<<*pfichas<<endl;
-                pfichas++;
-            }
-            pfichas-=12;
-            guardarcol=pColumnas;
-            guardar=pFilas;
-            cout<<"ubicacion de apuntador pvector;"<<pvector<<endl;
-            cout <<"ubicacion pfilas;"<<pFilas;
+                        }
 
 
-            cout<<"ubicacion pColumnas"<<pColumnas;
 
-            cout <<"entrega del posicion del pfcihas:"<<pfichas<<endl;
-
-for(int y=0;y<5;y++){
-/////////////////////////////////////////////CORRE JUGADA COLOMBIANO//////////////////////////////////////////////
-
-
-             cout<<"columna:"<<*pColumnas<<"fila:"<<*pFilas<<endl;
-            Ncolombiano=2+rand()%10;                //escoje el colombiano
-            Ndado=1+rand()%8;                     //define la jugada a realizar
-            cout<<"jugada del colombiano:"<<Ncolombiano<<endl;
-            cout<<"jugada a probar :"<<Ndado<<endl;
-            pfichas+=Ncolombiano;   //mover apuntador hacia el Numero de colombiano
-            cout<<"ubicacion:"<<*pfichas<<endl;
-            pvector+=*pfichas;          //muevo el apuntador hacia la ubicacion del colombiano en el vectorgeneral
-            pFilas+=*pfichas;               //ubico la fila
-            pColumnas+=*pfichas;                //ubico la columna
-
-             cout<<"columna:"<<*pColumnas<<"fila:"<<*pFilas<<endl;
-
-
-while(verificador==0){
-            if ( Ndado==1&& (*pColumnas+1)<8 && 0<=(*pFilas-2) && (saltovalidocolombia(pvector,-15))==0 ) //no se sale del tablero y no salta sobre venezolano y colombiao
-             {
-                verificador=ponercolombiano(-15,pvector,verificador);                   //salto colomiano
-            }
-            if (Ndado==2&&(*pColumnas+2)<8 && 0<=(*pFilas-1) && (saltovalidocolombia(pvector,-6))==0 )
-            {
-                verificador=ponercolombiano(-6,pvector,verificador);                   //salto colomiano
-            }
-            if (Ndado==3&&(*pColumnas+2)<8 && (*pFilas+1)<8 && (saltovalidocolombia(pvector,10))==0 )
-            {
-                verificador=ponercolombiano(10,pvector,verificador);                   //salto colomiano
-            }
-            if (Ndado==4&&(*pColumnas+1)<8 && (*pFilas+2)<8 && (saltovalidocolombia(pvector,17))==0 )
-            {
-                verificador=ponercolombiano(17,pvector,verificador);                   //salto colomiano
-            }
-            if (Ndado==5&&(*pFilas+2)<8 && 0<=(*pColumnas-1) && (saltovalidocolombia(pvector,15))==0 )
-            {
-                verificador=ponercolombiano(15,pvector,verificador);                   //salto colomiano
-            }
-            if (Ndado==6&&(*pFilas+1)<8 && 0<=(*pColumnas-2) && (saltovalidocolombia(pvector,6))==0 )
-            {
-                verificador=ponercolombiano(6,pvector,verificador);                   //salto colomiano
-            }
-            if (Ndado==7&&0<=(*pColumnas-2) && 0<=(*pFilas-1) && (saltovalidocolombia(pvector,-10))==0 )
-            {
-                verificador=ponercolombiano(-10,pvector,verificador);                   //salto colomiano
-            }
-            if (Ndado==8&&0<=(*pColumnas-1) && 0<=(*pFilas-2) && (saltovalidocolombia(pvector,-17))==0 )
-            {
-                verificador=ponercolombiano(-17,pvector,verificador);                   //salto colomiano
-            }
-            if (verificador==0)     //hace la siguiente jugada por que no se hizo ninguna
-            {
-                if (Ndado==1&&suma==1){
-                    // Ncolombiano++; salta de jugador
-                    verificador++;
                 }
-                if(Ndado==8&&suma==0){
-                suma++;}
-                if (Ndado<8&&suma==0){
-                Ndado++;
-                }
-                if (suma==1&&Ndado>1){Ndado--;}
-            }
-}
-            pFilas=guardar;
-            pColumnas=guardarcol; // dejo en cero el apuntador de columnas
 
-            pvector-=*pfichas;              //pongo el apuntador en ceros
-            pfichas-=Ncolombiano;
-            cout<<"verificador:"<<verificador<<endl;
-            cout<<" jugada hecha:"<<Ndado;
-             cout<<"columna:"<<*pColumnas<<"fila:"<<*pFilas;
 
-            impresiontablerosolo(pvector);
-            cout <<"entrega del posicion del vector"<<pvector<<endl;
-            cout <<"entrega del posicion del pfcihas:"<<pfichas<<endl;
-            cout <<"emntrega ubicacion pfilas;"<<pFilas;
 
-            cout<<"entrega ubicacion pColumnas"<<pColumnas;
-
-/////////////////////////////////////////////CORRE JUGADA VENEZOLANO    //////////////////////////////////////////////
-            cout<<"columna:"<<*pColumnas<<"fila:"<<*pFilas<<endl;
-                Nvenezolano=rand()%2;              //define que venezolano se mueve
-            Ndado=1+rand()%8;                     //define la jugada a realizar
-            cout<<"El venezolano a mover es el numero "<<Nvenezolano<<endl;
-            cout<<"Jugada inicial :"<<Ndado<<endl;
-
-            pfichas+=Nvenezolano;   //mover apuntador hacia el venezolano
-            cout<<"ubicacion venezolano"<<*pfichas<<endl;
-            pvector+=*pfichas;          //muevo el apuntador hacia la ubicacion del venezolano en el vector
-            pFilas+=*pfichas;           //define en que fila esta
-            pColumnas+=*pfichas;        //define en que columna esta
-            cout<<"columna:"<<*pColumnas<<"fila:"<<*pFilas;
-
-while(turno==0){
-            if ( Ndado==1&& (*pColumnas+1)<8 && 0<=(*pFilas-2) && (contenidoV(pvector,-15,colombianosmuertos))==0 ) //no se sale del tablero y no salta sobre venezolano y colombiao
-             {
-                turno=ponervenezolano(-15,pvector);                   //salto colomiano
-                *pfichas-=15;
-
-            }
-            if (Ndado==2&&(*pColumnas+2)<8 && 0<=(*pFilas-1) && (contenidoV(pvector,-6,colombianosmuertos))==0 )
-            {
-                turno=ponervenezolano(-6,pvector);                   //salto colomiano
-                *pfichas-=6;
-            }
-            if (Ndado==3&&(*pColumnas+2)<8 && (*pFilas+1)<8 && (contenidoV(pvector,10,colombianosmuertos))==0 )
-            {
-                turno=ponervenezolano(10,pvector);                   //salto colomiano
-                *pfichas+=10;
-
-            }
-            if (Ndado==4&&(*pColumnas+1)<8 && (*pFilas+2)<8 && (contenidoV(pvector,17,colombianosmuertos))==0 )
-            {
-                turno=ponervenezolano(17,pvector);                   //salto colomiano
-                *pfichas+=17;
-            }
-            if (Ndado==5&&(*pFilas+2)<8 && 0<=(*pColumnas-1) && (contenidoV(pvector,15,colombianosmuertos))==0 )
-            {
-                turno=ponervenezolano(15,pvector);                   //salto colomiano
-                *pfichas+=15;
-            }
-            if (Ndado==6&&(*pFilas+1)<8 && 0<=(*pColumnas-2) && (contenidoV(pvector,6,colombianosmuertos))==0 )
-            {
-                turno=ponervenezolano(6,pvector);                   //salto colomiano
-                *pfichas+=6;
-            }
-            if (Ndado==7&&0<=(*pColumnas-2) && 0<=(*pFilas-1) && (contenidoV(pvector,-10,colombianosmuertos))==0 )
-            {
-                turno=ponervenezolano(-10,pvector);                   //salto colomiano
-                *pfichas-=10;
-            }
-            if (Ndado==8&&0<=(*pColumnas-1) && 0<=(*pFilas-2) && (contenidoV(pvector,-17,colombianosmuertos))==0 )
-            {
-                turno=ponervenezolano(-17,pvector);                   //salto colomiano
-                *pfichas-=17;
-
-            }
-            if (turno==0)     //hace la siguiente jugada por que no se hizo ninguna
-            {
-                if (Ndado==1&&salto==1){
-                        turno++;
-                    //Nvenezolano++; //salta de jugador
-                }
-                if(Ndado==8&&salto==0){
-                salto++;}
-                if (Ndado<8&&salto==0){
-                Ndado++;
-                }
-                if (salto==1&&Ndado>1){Ndado--;}
-            }
 
 
 }
 
-            pFilas=guardar; //dejo en ceros el apuntador de filas
-            //pFilas+=(Dado8(Ndado));
-            pColumnas=guardarcol; // dejo en cero el apuntador de columnas
-            //pColumnas+=(Dado8(Ndado));
-
-            pvector-=*pfichas;              //pongo el apuntador en ceros
-            pvector+=(Dado8(Ndado));
-            pfichas-=Nvenezolano      ;           //dejo el jugador en 0
-            cout<<"verificador:"<<turno<<endl;
-            cout<<" jugada hecha:"<<Ndado;
-            cout<<"columna:"<<*pColumnas<<"fila:"<<*pFilas;
-            impresiontablerosolo(pvector);
-
-            cout<<"columbianos muertos:"<<colombianosmuertos<<endl;
-
-            cout <<"entrega del posicion del vector"<<pvector<<endl;
-            cout <<"entrega del posicion del pfcihas:"<<pfichas<<endl;
-            cout <<"emntrega ubicacion pfilas;"<<pFilas;
-            cout<<"entrega ubicacion pColumnas"<<pColumnas;
 
 
-            for(int j=0;j<12;j++)
-            {
-                cout<<*pfichas<<endl;
-                pfichas++;
-            }
-            pfichas-=12;
-          }
 
 
+}else{
+
+        j=0;
+
+		c=rand()%2+10;
+
+		columna=(*(pposicion+c))%8;
+
+		if(columna==0){columna=8;}
+
+		fila=((*(pposicion+c))-columna)/8;
+
+		dado=rand()%8+1;
+
+        while(j!=1){            //se sale cuando  hace el movimiento
+
+                if(dado==1){
+
+                    movimiento_venezolano((columna+1),(fila-2), dado);
+
+                }
+
+                if(dado==2){
+
+                   movimiento_venezolano((columna+2),(fila-1), dado);
+
+                }
+
+                if(dado==3){
+
+                   movimiento_venezolano((columna+2),(fila+1), dado);
+
+                }
+
+                if(dado==4){
+
+                    movimiento_venezolano((columna+1),(fila+2), dado);
+
+                }
+
+                if(dado==5){
+
+                    movimiento_venezolano((columna-1),(fila+2), dado);
+
+                }
+
+                if(dado==6){
+
+                    movimiento_venezolano((columna-2),(fila+1), dado);
+
+                }
+
+                if(dado==7){
+
+                   movimiento_venezolano((columna-2),(fila-1), dado);
+
+                }
+
+                if(dado==8){
+
+                    movimiento_venezolano((columna-1),(fila-2), dado);
+
+                }
+
+
+
+}
+
+
+
+
+
+
+
+}
+
+//imprime el tablero para cada movimiento
+
+        cout<<" "<<endl;
+
+        cout<<"el resultado del movimiento "<<l<<" es"<<endl;
+
+cout<<" "<<endl;
+
+
+
+impresiontablero(pnueva);
+
+}
+
+
+
+
+
+for(z=1;z<=64;z++){
+
+    if((*(pnueva+z))==1){
+
+        conclusion++;
 
     }
 
-    return 0;
 }
+
+cout<<endl;
+
+cout<<"tras 20 movimientos fueron capturados "<<10-conclusion<<" colombianos "<<endl;
+
+
+
+
+
+//return(0);
+
+
+
+
+
+}
+
+
+
+
+
+void movimiento(int alfa, int beta, int omega){       //columnas,fila,dado
+
+int k;
+
+if(0<alfa && alfa<9 && 0<=beta && beta<8){      // prohibe la salida del vector
+
+                            for(k=0;k<12;k++){      //recorre todas las posiciones donde ha fichas(1,2)
+
+                                if(k!=c && (*(pposicion+k))==(alfa+(beta*8))){ //si las pociciones anteriores son diferente de la ubicacion del  colombiano
+
+                                    if(dado==8){dado=1; registro++;}else{dado++; registro++;}
+
+                                     if(registro==8){
+
+                                        dado=9;
+
+                                        p=0;
+
+                                    }
+
+                                    break;
+
+                                }
+
+
+
+                            }
+
+                            if(dado==omega){
+
+                                (*(pnueva+(*(pposicion+c))))=0;
+
+                                *(pposicion+c)=alfa+(beta*8);
+
+                                (*(pnueva+(*(pposicion+c))))=1;
+
+                                j=1;
+
+                            }
+
+
+
+                    }else{
+
+                        if(dado==8){dado=1; registro++;}else{dado++; registro++;}
+
+                                     if(registro==8){
+
+                                        dado=9;
+
+                                        p=0;
+
+                    }
+
+}
+
+}
+
+
+
+void movimiento_venezolano(int gamma, int epsilon, int pi){         //columnas,fila,dado
+
+    int x;
+
+if( 0<gamma && gamma<9 && 0<=epsilon && epsilon<8){         // prohibe la salida del tablero
+
+                           for(x=10;x<12;x++){             //ciclo 2 veces  de venezolanos
+
+                                if(x!=c && (*(pposicion+x))==gamma+(epsilon*8)){ //solo entra en 11 es diferente del numero ,,,,si la posicion del otro venezolano es igual a la del compaï¿½ero
+
+                                        if(pi==8){dado=1;}else{dado++;}         //hace la otra jugada
+
+
+
+                                    break;
+
+                                    }
+
+                                    }
+
+
+
+
+
+
+
+
+
+                                    if(dado==pi){
+
+                                    (*(pnueva+(*(pposicion+c))))=0;
+
+                                    (*(pposicion+c))=gamma+(epsilon*8);
+
+                                    (*(pnueva+(*(pposicion+c))))=2;
+
+                                     j=1;}
+
+                     }else{
+
+                     if(pi==8){dado=1;}else{dado++;}
+
+                     }
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

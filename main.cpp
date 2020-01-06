@@ -7,21 +7,22 @@
 
 using namespace std;
 
-int i, *pposicion,m, *pnueva, inicio, l, c, columna, fila, registro, dado, p, j,z, temporal, conclusion;
+int i,m, *pnueva, inicio, l, c, columna, fila, registro, dado, p, j,z, temporal, conclusion;
 
 void movimiento(int , int , int );
 void movimiento_venezolano(int , int , int );
 void impresiontablero(int *pnueva);
 string recorte(string cadena);
-
-
-int main(){
-    struct casilla{
+ struct casilla{
                 int contenido;
                 string * nombre;
 
     };
     struct casilla posicion[13];
+
+
+int main(){
+
     struct nombre {
             string nombre;
                 };
@@ -42,7 +43,7 @@ for (int x=1;x<=10;x++){
 
 
 
-pposicion=new int [13];
+//pposicion=new int [13];
 pnueva=new int [65];
 for(int x=1;x<65;x++)
         {
@@ -52,17 +53,17 @@ for(int x=1;x<65;x++)
 
 srand(time(NULL));
    for(i=1;i<=12;i++){
-    *(pposicion+i)=1 + rand()%63;
+    posicion[i].contenido=1 + rand()%63;
    for(m=1;m<i;m++){
-        if(*(pposicion+i)== *(pposicion+m)){
+        if(posicion[i].contenido==posicion[m].contenido){
             i=i-1;
             break;
         }
     }
     if(i<=10){
-            *(pnueva+*(pposicion+i))=1;
+            *(pnueva+posicion[i].contenido)=1;
         }else{
-            *(pnueva+*(pposicion+i))=2;
+            *(pnueva+posicion[i].contenido)=2;
         }
 
    }
@@ -79,12 +80,12 @@ system("pause");
         j=0;
 		if(l%2==1){
 		c=rand()%10+1;
-		while(*(pnueva+*(pposicion+c))==0 || *(pnueva+*(pposicion+c))==2){
+		while(*(pnueva+posicion[c].contenido)==0 || *(pnueva+posicion[c].contenido)==2){
 		if(c==10){c=1;}else{c++;}       // si no hay jugador en esa posicion busca el proximo
 		}
-		columna=*(pposicion+c)%8;
+		columna=posicion[c].contenido%8;
 		if(columna==0){columna=8;}
-		fila=(*(pposicion+c)-columna)/8;
+		fila=(posicion[c].contenido-columna)/8;
 
 		dado=rand()%8+1;
 		registro=0;
@@ -127,10 +128,10 @@ system("pause");
                                     break;
                                     break;
                                 }
-                        if(*(pnueva+*(pposicion+c))!=0){  // hay un colombiano o un venezolano
+                        if(*(pnueva+posicion[c].contenido)!=0){  // hay un colombiano o un venezolano
                             p=1;                    // cambia la condicion para buscar otro colombiano
-                        columna=*(pposicion+c)%8;
-                        fila=(*(pposicion+c)-columna)/8;
+                        columna=posicion[c].contenido%8;
+                        fila=(posicion[c].contenido-columna)/8;
                         dado=rand()%8+1;
                         registro=0;
                         }
@@ -145,9 +146,9 @@ system("pause");
 }else{
         j=0;
 		c=rand()%2+11;
-		columna=*(pposicion+c)%8;
+		columna=posicion[c].contenido%8;
 		if(columna==0){columna=8;}
-		fila=(*(pposicion+c)-columna)/8;
+		fila=(posicion[c].contenido-columna)/8;
 		dado=rand()%8+1;
         while(j!=1){
                 if(dado==1){
@@ -200,7 +201,7 @@ return(0);
 void movimiento(int alfa, int beta, int omega){
 if(0<alfa && alfa<9 && 0<=beta && beta<8){
                             for(int k=1;k<=12;k++){
-                                if(k!=c && *(pposicion+k)==(alfa+(beta*8))){
+                                if(k!=c && posicion[k].contenido==(alfa+(beta*8))){
                                     if(dado==8){dado=1; registro++;}else{dado++; registro++;}
                                      if(registro==8){
                                         dado=9;
@@ -211,9 +212,9 @@ if(0<alfa && alfa<9 && 0<=beta && beta<8){
 
                             }
                             if(dado==omega){
-                                *(pnueva+*(pposicion+c))=0;
-                                *(pposicion+c)=alfa+(beta*8);
-                                *(pnueva+*(pposicion+c))=1;
+                                *(pnueva+posicion[c].contenido)=0;
+                                posicion[c].contenido=alfa+(beta*8);
+                                *(pnueva+posicion[c].contenido)=1;
                                 j=1;
                             }
 
@@ -229,7 +230,7 @@ if(0<alfa && alfa<9 && 0<=beta && beta<8){
 void movimiento_venezolano(int gamma, int epsilon, int pi){
     if( 0<gamma && gamma<9 && 0<=epsilon && epsilon<8){
                            for(int x=11;x<=12;x++){
-                                if(x!=c && *(pposicion+x)==gamma+(epsilon*8)){
+                                if(x!=c && posicion[x].contenido==gamma+(epsilon*8)){
                                         if(pi==8){dado=1;}else{dado++;}
 
                                     break;
@@ -237,9 +238,9 @@ void movimiento_venezolano(int gamma, int epsilon, int pi){
                                     }
 
                                     if(dado==pi){
-                                    *(pnueva+*(pposicion+c))=0;
-                                    *(pposicion+c)=gamma+(epsilon*8);
-                                    *(pnueva+*(pposicion+c))=2;
+                                    *(pnueva+posicion[c].contenido)=0;
+                                    posicion[c].contenido=gamma+(epsilon*8);
+                                    *(pnueva+posicion[c].contenido)=2;
                                     j=1;}
                      }else{
                      if(pi==8){dado=1;}else{dado++;}

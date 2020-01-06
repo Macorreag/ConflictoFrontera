@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1445861574 source:c:\users\miller\documents\poo\prueba\main.cpp
+	<iostream>
+	<cstdlib>
+	<stdio.h>
+	<ctime>
+	<windows.h>
+

@@ -1,10 +1,9 @@
-#include <iostream>
+
 #include <iostream>
 #include <cstdlib>
 #include <stdio.h>
 #include <ctime>
 #include <windows.h>
-
 
 using namespace std;
 
@@ -58,9 +57,12 @@ int contenido(int *pvector,int movimientocasilla){
 
 int llenarfichas(int *pfichas,int numeroficha,int aleatorio){
         pfichas=pfichas+numeroficha;
-        *pfichas=aleatorio;
 
+        *pfichas=aleatorio;
         cout<<*pfichas<<endl;
+
+
+
         pfichas=pfichas-numeroficha;
 }
 
@@ -112,11 +114,17 @@ int main()
         int *pfichas;               //apuntador hacia las fichas
         int *pColumnas;              //apuntador hacia Columnas
         int *pFilas;                 //apuntador hacia Filas
+        int *guardar;
+        int *guardarcol;
 
     pColumnas=new int [64];         //separa 64 casillas de memoria
     pFilas=new int [64];            //separa 64 casillas de memoria
     pfichas=new int [12];           //ubicacion de los colombianos y venezolanos
     pvector=new int  [64];          //separa 64 casillas de memoria
+
+    cout<<"ubicacion de apuntador pvector;"<<pvector<<endl;
+
+
 
      for(int x=0;x<64;x++)
         {
@@ -141,7 +149,6 @@ int main()
             int salto=0;
             int colombianosmuertos=0;
 
-            //int ubicacionactual=0;
 
             for(int x=0;x<2;x++){
             aleatorio=rand()%63;                //ubica dos venezolanos
@@ -150,7 +157,8 @@ int main()
                         llenarfichas(pfichas,x,aleatorio);
                         }
             }
-            pfichas+=2;                              //salta en el vector para poner posiciones de colombianos
+           pfichas+=2;                              //salta en el vector para poner posiciones de colombianos
+
             for(int x=0 ;x<10;x++){                 //ubica 10 colombianos aleatorios
             aleatorio=rand()%63;
             if((contenido(pvector,aleatorio))==1){
@@ -158,26 +166,31 @@ int main()
                        llenarfichas(pfichas,x,aleatorio);
                       }
             }
-            pfichas-=3;                             //regresa el apuntador a ceros
+            pfichas-=2;                             //regresa el apuntador a ceros
             impresiontablero(pvector,pFilas,pColumnas); //imprime tablero inicial define filas y columnas
 
-            cout <<"entrega del posicion del vector"<<pvector<<endl;
-            cout <<"entrega del posicion del pfcihas:"<<*pfichas<<endl;
-
-
-
-for(int f=0;f<6;f++){
-
-/////////////////////////////////////////////CORRE JUGADA COLOMBIANO//////////////////////////////////////////////
- for(int j=0;j<13;j++)
+             for(int j=0;j<12;j++)
             {
                 cout<<*pfichas<<endl;
                 pfichas++;
             }
-            pfichas-=13;
-            cout <<"entrega del posicion del pfcihas:"<<*pfichas<<endl;
+            pfichas-=12;
+            guardarcol=pColumnas;
+            guardar=pFilas;
+            cout<<"ubicacion de apuntador pvector;"<<pvector<<endl;
+            cout <<"ubicacion pfilas;"<<pFilas;
+
+
+            cout<<"ubicacion pColumnas"<<pColumnas;
+
+            cout <<"entrega del posicion del pfcihas:"<<pfichas<<endl;
+
+for(int y=0;y<5;y++){
+/////////////////////////////////////////////CORRE JUGADA COLOMBIANO//////////////////////////////////////////////
+
+
              cout<<"columna:"<<*pColumnas<<"fila:"<<*pFilas<<endl;
-            Ncolombiano=2+rand()%11;                //escoje el colombiano
+            Ncolombiano=2+rand()%10;                //escoje el colombiano
             Ndado=1+rand()%8;                     //define la jugada a realizar
             cout<<"jugada del colombiano:"<<Ncolombiano<<endl;
             cout<<"jugada a probar :"<<Ndado<<endl;
@@ -188,6 +201,7 @@ for(int f=0;f<6;f++){
             pColumnas+=*pfichas;                //ubico la columna
 
              cout<<"columna:"<<*pColumnas<<"fila:"<<*pFilas<<endl;
+
 
 while(verificador==0){
             if ( Ndado==1&& (*pColumnas+1)<8 && 0<=(*pFilas-2) && (saltovalidocolombia(pvector,-15))==0 ) //no se sale del tablero y no salta sobre venezolano y colombiao
@@ -236,8 +250,9 @@ while(verificador==0){
                 if (suma==1&&Ndado>1){Ndado--;}
             }
 }
-            pFilas-=*pfichas; //dejo en ceros el apuntador de filas
-            pColumnas-=*pfichas; // dejo en cero el apuntador de columnas
+            pFilas=guardar;
+            pColumnas=guardarcol; // dejo en cero el apuntador de columnas
+
             pvector-=*pfichas;              //pongo el apuntador en ceros
             pfichas-=Ncolombiano;
             cout<<"verificador:"<<verificador<<endl;
@@ -245,21 +260,15 @@ while(verificador==0){
              cout<<"columna:"<<*pColumnas<<"fila:"<<*pFilas;
 
             impresiontablerosolo(pvector);
-            cout <<"entrega del posicion del vector"<<pvector;
+            cout <<"entrega del posicion del vector"<<pvector<<endl;
+            cout <<"entrega del posicion del pfcihas:"<<pfichas<<endl;
+            cout <<"emntrega ubicacion pfilas;"<<pFilas;
 
-
-
-
+            cout<<"entrega ubicacion pColumnas"<<pColumnas;
 
 /////////////////////////////////////////////CORRE JUGADA VENEZOLANO    //////////////////////////////////////////////
-          for(int j=0;j<13;j++)
-            {
-                cout<<*pfichas<<endl;
-                pfichas++;
-            }
-            pfichas-=13;
-            cout <<"entrega del posicion del pfcihas:"<<*pfichas<<endl;
-            Nvenezolano=rand()%2;              //define que venezolano se mueve
+            cout<<"columna:"<<*pColumnas<<"fila:"<<*pFilas<<endl;
+                Nvenezolano=rand()%2;              //define que venezolano se mueve
             Ndado=1+rand()%8;                     //define la jugada a realizar
             cout<<"El venezolano a mover es el numero "<<Nvenezolano<<endl;
             cout<<"Jugada inicial :"<<Ndado<<endl;
@@ -276,6 +285,7 @@ while(turno==0){
              {
                 turno=ponervenezolano(-15,pvector);                   //salto colomiano
                 *pfichas-=15;
+
             }
             if (Ndado==2&&(*pColumnas+2)<8 && 0<=(*pFilas-1) && (contenidoV(pvector,-6,colombianosmuertos))==0 )
             {
@@ -331,11 +341,14 @@ while(turno==0){
 
 }
 
-            pFilas-=*pfichas; //dejo en ceros el apuntador de filas
-            pColumnas-=*pfichas; // dejo en cero el apuntador de columnas
+            pFilas=guardar; //dejo en ceros el apuntador de filas
+            //pFilas+=(Dado8(Ndado));
+            pColumnas=guardarcol; // dejo en cero el apuntador de columnas
+            //pColumnas+=(Dado8(Ndado));
+
             pvector-=*pfichas;              //pongo el apuntador en ceros
-            pfichas-=Nvenezolano
-            ;           //dejo el jugador en 0
+            pvector+=(Dado8(Ndado));
+            pfichas-=Nvenezolano      ;           //dejo el jugador en 0
             cout<<"verificador:"<<turno<<endl;
             cout<<" jugada hecha:"<<Ndado;
             cout<<"columna:"<<*pColumnas<<"fila:"<<*pFilas;
@@ -343,15 +356,23 @@ while(turno==0){
 
             cout<<"columbianos muertos:"<<colombianosmuertos<<endl;
 
-cout <<"entrega del posicion del vector"<<pvector;
+            cout <<"entrega del posicion del vector"<<pvector<<endl;
+            cout <<"entrega del posicion del pfcihas:"<<pfichas<<endl;
+            cout <<"emntrega ubicacion pfilas;"<<pFilas;
+            cout<<"entrega ubicacion pColumnas"<<pColumnas;
+
+
+            for(int j=0;j<12;j++)
+            {
+                cout<<*pfichas<<endl;
+                pfichas++;
+            }
+            pfichas-=12;
+          }
 
 
 
-
-}
-
- //delete pvector;
+    }
 
     return 0;
-
-}}
+}

@@ -18,7 +18,6 @@ string recorte(string cadena);
  struct casilla{
                 int contenido;
                 char  *nombre;
-
     };
 
 
@@ -41,9 +40,7 @@ cout<<"-------------------Bienvenido a conflicto en la frontera-----------------
 
 
 srand(time(NULL));
-
    for(i=1;i<=12;i++){
-        (pposicion+i)->nombre=new char [6];
     (pposicion+i)->contenido=1 + rand()%63;
    for(m=1;m<i;m++){
         if((pposicion+i)->contenido==(pposicion+m)->contenido){
@@ -52,32 +49,52 @@ srand(time(NULL));
         }
     }
     if(i<=10){
-            cout <<"ingrese el nombre de el  colombiano "<<i<<":";
-
-
             (pnueva+(pposicion+i)->contenido)->contenido=1; //pone el jugador colombiano dentro del tablero
 
         }else{
-            cout <<"ingrese el nombre de el  venezolano "<<i<<":";
             (pnueva+(pposicion+i)->contenido)->contenido=2;    //pone el jugador venezolano dentro del tablero
         }
-        string cad1;
-        cin>>cad1;
-        *((pposicion+i)->nombre)=(recorte(cad1)[0]); //direcciona el apuntador hacia el nombre
-        *((pposicion+i)->nombre+1)=(recorte(cad1)[1]);
-        *((pposicion+i)->nombre+2)=(recorte(cad1)[2]);
-        *((pposicion+i)->nombre+3)=(recorte(cad1)[3]);
-        *((pposicion+i)->nombre+4)=(recorte(cad1)[4]);
-         (pnueva+((pposicion+i)->contenido))->nombre=(pposicion+i)->nombre;
-         if(i<11){cout<<"el nombre asignado al colombiano"<<i<<" fue:"<<(pposicion+i)->nombre<<endl;}else
-            {
-                cout<<"el nombre asignado al venezolano  fue:"<<(pposicion+i)->nombre<<endl;
-            }
 
    }
 
-system("cls");
+ cab=NULL;
+ int z;                                                 //nodos
 
+
+ z=0;
+ while(z<=65){
+  posicion_lista(i); //creamos y encadenamos 65 nodos
+
+  z++;
+ }
+ if(posicion_lista(5)==-1){};
+ for(int x=0,x<=65;x++)
+ {
+        ;
+ }
+
+   for (int x=1;x<=12;x++){
+        (pposicion+x)->nombre=new char [6];
+
+        if(x<11){cout <<"ingrese el nombre de el  colombiano "<<x<<":";}else{cout <<"ingrese el nombre de el  venezolano "<<x<<":";}
+        string cad1;
+        cin>>cad1;
+
+        *((pposicion+x)->nombre)=(recorte(cad1)[0]); //direcciona el apuntador hacia el nombre
+        *((pposicion+x)->nombre+1)=(recorte(cad1)[1]);
+        *((pposicion+x)->nombre+2)=(recorte(cad1)[2]);
+        *((pposicion+x)->nombre+3)=(recorte(cad1)[3]);
+        *((pposicion+x)->nombre+4)=(recorte(cad1)[4]);
+
+        if(x<11){cout<<"el nombre asignado al colombiano fue:"<<(pposicion+x)->nombre<<endl;}else
+            {
+                cout<<"el nombre asignado al venezolano  fue:"<<(pposicion+x)->nombre<<endl;
+            }
+        (pnueva+((pposicion+x)->contenido))->nombre=(pposicion+x)->nombre;
+
+
+}
+ //system("cls");
    cout<<"la posicion inicial del juego es "<<endl;
 cout<<" "<<endl;
 for(inicio=1;inicio<65;inicio+=8){
@@ -196,7 +213,6 @@ system("pause");
 
 
 
-
 }
 //imprime el tablero para cada movimiento
         cout<<" "<<endl;
@@ -226,6 +242,7 @@ return(0);
 
 void movimiento(int alfa, int beta, int omega){
 if(0<alfa && alfa<9 && 0<=beta && beta<8){
+                    cout<<"el  dado  que cayo es:"<<omega<<endl;
                             for(int k=1;k<=12;k++){
                                 if(k!=c && (pposicion+k)->contenido==(alfa+(beta*8))){
                                     if(dado==8){dado=1; registro++;}else{dado++; registro++;}
@@ -242,6 +259,7 @@ if(0<alfa && alfa<9 && 0<=beta && beta<8){
                                 (pnueva+(pposicion+c)->contenido)->nombre=vacio;
                                 (pposicion+c)->contenido=alfa+(beta*8);
                                 (pnueva+(pposicion+c)->contenido)->nombre=(pposicion+c)->nombre;
+                                 cout<<"el colombiano que se mueve es de nombre:"<<(pnueva+(pposicion+c)->contenido)->nombre;
                                 (pnueva+(pposicion+c)->contenido)->contenido=1;
                                 j=1;
                             }
@@ -256,6 +274,7 @@ if(0<alfa && alfa<9 && 0<=beta && beta<8){
 }
 
 void movimiento_venezolano(int gamma, int epsilon, int pi){
+    cout<<"el dado que callo  es:"<<pi<<endl;
     if( 0<gamma && gamma<9 && 0<=epsilon && epsilon<8){
                            for(int x=11;x<=12;x++){
                                 if(x!=c && (pposicion+x)->contenido==gamma+(epsilon*8)){
@@ -284,7 +303,7 @@ void movimiento_venezolano(int gamma, int epsilon, int pi){
                                     }
                                     (pnueva+(pposicion+c)->contenido)->nombre=(pposicion+c)->nombre;
 
-
+                                    cout<<"el venezolano que se mueve es de nombre:"<<(pnueva+(pposicion+c)->contenido)->nombre;
                                     (pnueva+(pposicion+c)->contenido)->contenido=2;
                                     j=1;}
                      }else{
